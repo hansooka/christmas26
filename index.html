@@ -559,7 +559,18 @@ $("editAboutBtn").onclick=openAbout;
 $("revealBtn").onclick=()=>{ S.reveal=!S.reveal; try{ localStorage.setItem("wl-reveal",S.reveal?"1":"0"); }catch(e){} render(); };
 $("filterSeg").onclick=(e)=>{ const b=e.target.closest("button[data-f]"); if(!b) return; S.filter=b.dataset.f; document.querySelectorAll("#filterSeg button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); render(); };
 $("sortSeg").onclick=(e)=>{ const b=e.target.closest("button[data-s]"); if(!b) return; S.sort=b.dataset.s; document.querySelectorAll("#sortSeg button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); render(); };
-$("ownerBtn").onclick=async()=>{ try{ if (isOwner()) await S.api.signOut(); else { await S.api.signIn(); if (!DEMO) setTimeout(()=>{ if (!S.api.isOwner) toast("That account isn't the owner's, so you're viewing as a guest."); },1500); } }catch(e){ toast("Sign-in didn't finish. Try again."); } };
+$("ownerBtn").onclick=async()=>{ try{ if (isOwner()) await S.api.signOut(); else { await S.api.signIn(); if (!DEMO) setTimeout(()=>{ if (!S.api.isOwner) toast("That account isn't the owner's, so you're viewing as a guest."); },1500); } }catch(e){
+  const c=(e&&e.code)||"";
+  const why={
+    "auth/unauthorized-domain":"Sign-in is blocked because hansooka.github.io isn't in Firebase's Authorized domains list yet.",
+    "auth/operation-not-allowed":"Google sign-in isn't turned on in Firebase Authentication yet.",
+    "auth/popup-blocked":"Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
+    "auth/popup-closed-by-user":"The sign-in window was closed before it finished. Try again.",
+    "auth/cancelled-popup-request":"The sign-in window was closed before it finished. Try again.",
+    "auth/configuration-not-found":"Firebase Authentication isn't set up yet. Click Get started on the Authentication page."
+  }[c];
+  S.error=(why||"Sign-in didn't finish.")+(c?" (code: "+c+")":"");
+  render(); toast(why||"Sign-in didn't finish."); } };
 
 // ---------------- Boot ----------------
 $("demoBar").hidden=!DEMO;
