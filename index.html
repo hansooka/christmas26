@@ -288,7 +288,7 @@ async function firebaseApi(){
   const auth=A.getAuth(app); const db=F.getFirestore(app);
   const api={uid:null, email:null, isOwner:false, onAuth:()=>{}};
   A.onAuthStateChanged(auth, (u)=>{
-    if (!u){ A.signInAnonymously(auth).catch(()=>{}); api.uid=null; api.email=null; api.isOwner=false; api.onAuth(); return; }
+    if (!u){ A.signInAnonymously(auth).then(()=>{ if (S.error&&S.error.startsWith("Claiming")) { S.error=null; render(); } }).catch((e)=>{ S.error="Claiming is turned off right now, so the name menus are locked. (Owner: turn on Anonymous sign-in in Firebase Authentication. Code: "+((e&&e.code)||"unknown")+")"; render(); }); api.uid=null; api.email=null; api.isOwner=false; api.onAuth(); return; }
     api.uid=u.uid; api.email=u.email||null; api.isOwner=false;
     if (u.email && OWNER_EMAIL_SHA256){
       crypto.subtle.digest("SHA-256", new TextEncoder().encode(u.email.trim().toLowerCase())).then(b=>{
