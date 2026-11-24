@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Matthew's Wish List</title>
+<meta name="description" content="Matthew's Christmas wish list. Pick a gift and claim it so nobody doubles up.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%81%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: pine hero band with drifting snow, then a grid of gift tags; About Me sits beside the list on wide screens. */
+:root{
+  --bg:#F1F5F2; --surface:#FFFFFF; --surface-2:#E7EEE9; --fg:#13261E; --muted:#56695F; --line:#D3DDD7;
+  --accent:#B01E3A; --accent-fg:#FFFFFF; --accent-soft:#F7E3E7;
+  --pine:#1D4A37; --pine-fg:#F1F7F3; --gold:#A87A22; --ok:#2C7349; --ok-soft:#E1F0E6;
+  --shadow:0 1px 2px rgba(19,38,30,.06),0 6px 20px rgba(19,38,30,.07);
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1813; --surface:#15241D; --surface-2:#1B2E25; --fg:#E7EFEA; --muted:#9AB0A4; --line:#293E34;
+  --accent:#E35470; --accent-fg:#1A0A0E; --accent-soft:#3A1820;
+  --pine:#10291E; --pine-fg:#E7F3EC; --gold:#E2B458; --ok:#79C99A; --ok-soft:#173326;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1813; --surface:#15241D; --surface-2:#1B2E25; --fg:#E7EFEA; --muted:#9AB0A4; --line:#293E34;
+  --accent:#E35470; --accent-fg:#1A0A0E; --accent-soft:#3A1820;
+  --pine:#10291E; --pine-fg:#E7F3EC; --gold:#E2B458; --ok:#79C99A; --ok-soft:#173326;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+button,input,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Hero */
+.hero{background:var(--pine);color:var(--pine-fg);position:relative;overflow:hidden;
+  margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 3rem);padding-bottom:2.5rem}
+.hero::before{content:"";position:absolute;inset:-200px 0 0 0;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(2px 2px at 20px 30px,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 120px 80px,#fff 50%,transparent 51%),radial-gradient(2.5px 2.5px at 200px 150px,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 60px 190px,#fff 50%,transparent 51%),radial-gradient(2px 2px at 160px 10px,#fff 50%,transparent 51%);
+  background-size:240px 220px;animation:snow 18s linear infinite}
+@keyframes snow{to{transform:translateY(220px)}}
+@media (prefers-reduced-motion: reduce){.hero::before{animation:none}}
+.hero .wrap{position:relative;display:grid;gap:1rem}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.hero h1{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:800;letter-spacing:-.02em}
+.hero h1 .tag{color:var(--gold)}
+.hero p.lede{margin:0;max-width:56ch;font-size:1.08rem;opacity:.9}
+.stats{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.5rem}
+.stat{font-family:var(--f-mono);font-size:.85rem;padding:.35rem .75rem;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07)}
+.stat b{font-weight:500;color:var(--gold)}
+
+/* Owner bar */
+.ownerbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--line)}
+.ownerbar .label{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:auto}
+.btn{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.5rem .9rem;font-weight:600;font-size:.92rem;cursor:pointer;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--accent);border-color:var(--accent)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.small{padding:.35rem .65rem;font-size:.85rem}
+
+/* Main layout */
+main{padding-block:2rem 4rem}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:2rem;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+.toolbar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.toolbar h2{font-size:1.6rem}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:.4rem .8rem;font-size:.88rem;font-weight:600;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--pine);color:var(--pine-fg)}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem}
+
+/* Gift tags */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.1rem}
+.gift{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.gift .pic{position:relative;aspect-ratio:4/3;max-width:100%;background:var(--surface-2);overflow:hidden}
+.gift .pic img,.gift .pic svg{width:100%;height:100%;object-fit:cover;display:block}
+.gift .hole{position:absolute;top:10px;left:10px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--line);z-index:2}
+.chip{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .5rem;border-radius:6px;background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.pic .chips{position:absolute;top:8px;right:8px;display:flex;gap:.35rem;z-index:2}
+.chip.want{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.chip.example{background:var(--gold);color:#1b1405;border-color:var(--gold)}
+.gift .body{padding:1rem 1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.gift h3{font-size:1.15rem;font-weight:700;overflow-wrap:anywhere}
+.gift .note{color:var(--muted);font-size:.92rem;margin:0;overflow-wrap:anywhere}
+.priceRow{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+.price{font-family:var(--f-mono);font-weight:500;font-size:1rem;font-variant-numeric:tabular-nums;background:var(--accent-soft);color:var(--accent);padding:.2rem .6rem .2rem .9rem;clip-path:polygon(10px 0,100% 0,100% 100%,10px 100%,0 50%)}
+.deal{font-size:.85rem;color:var(--ok);font-weight:600;margin:0;overflow-wrap:anywhere}
+.store{font-size:.88rem;font-weight:600;text-decoration:none;overflow-wrap:anywhere}
+.store:hover{text-decoration:underline}
+.gift .actions{margin-top:auto;padding-top:.5rem;display:flex;flex-direction:column;gap:.5rem}
+.claimed-banner{display:flex;align-items:center;gap:.5rem;background:var(--ok-soft);color:var(--ok);border-radius:10px;padding:.5rem .7rem;font-weight:600;font-size:.9rem}
+.claimed-banner span{overflow-wrap:anywhere;min-width:0}
+.gift.is-claimed .pic::after{content:"Taken";position:absolute;bottom:14px;right:-34px;transform:rotate(-30deg);background:var(--ok);color:var(--surface);font-family:var(--f-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.25rem 2.6rem}
+.gift.is-claimed .pic img,.gift.is-claimed .pic svg{filter:saturate(.45)}
+.claimForm{display:grid;gap:.45rem}
+.buyer{display:grid;gap:.3rem}
+.buyer label{font-size:.82rem;color:var(--muted);font-weight:600}
+select.purchaser{width:100%;appearance:none;-webkit-appearance:none;border:1.5px solid var(--accent);background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='2'/%3E%3C/svg%3E") no-repeat right .8rem center;border-radius:10px;padding:.55rem 2.2rem .55rem .75rem;font-weight:600;color:var(--fg);cursor:pointer}
+select.purchaser:disabled{opacity:.55;cursor:default}
+.claimForm label{font-size:.82rem;color:var(--muted)}
+input[type=text],input[type=number],input[type=url],textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:9px;padding:.5rem .65rem}
+textarea{resize:vertical;min-height:5rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+.row > .btn{flex:1}
+
+/* About */
+.about{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.4rem;position:sticky;top:calc(env(safe-area-inset-top,0px) + 1rem)}
+@media (max-width:900px){.about{position:static}}
+.about .avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;background:var(--surface-2);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:2rem;color:var(--fg);border:3px solid var(--gold);overflow:hidden}
+.about .avatar img{width:100%;height:100%;object-fit:cover}
+.about h2{font-size:1.5rem;margin-top:.9rem}
+.about .headline{color:var(--muted);margin:.2rem 0 0}
+.about .bio{margin:1rem 0 0;white-space:pre-line;overflow-wrap:anywhere}
+.facts{list-style:none;padding:0;margin:1.1rem 0 0;display:grid;gap:0;border-top:1px solid var(--line)}
+.facts li{display:flex;justify-content:space-between;gap:1rem;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.93rem}
+.facts .k{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:.15rem}
+.facts .v{text-align:right;font-weight:600;overflow-wrap:anywhere;min-width:0}
+.about .section-label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:1.2rem}
+
+.empty{border:1.5px dashed var(--line);border-radius:14px;padding:2.2rem 1.4rem;text-align:center;color:var(--muted);display:grid;gap:.75rem;justify-items:center}
+.empty h3{color:var(--fg);font-size:1.25rem}
+.notice{border-radius:12px;background:var(--surface-2);padding:.8rem 1rem;color:var(--muted);font-size:.92rem;margin-bottom:1rem}
+
+/* Dialog */
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);padding:0;width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 48px)}
+dialog::backdrop{background:rgba(8,18,13,.55)}
+.dlg{padding:1.4rem;display:grid;gap:.9rem}
+.dlg h2{font-size:1.4rem}
+.field{display:grid;gap:.3rem}
+.field label{font-weight:600;font-size:.9rem}
+.field .hint{font-size:.82rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:480px){.two{grid-template-columns:1fr}}
+.check{display:flex;gap:.5rem;align-items:center;font-weight:600;font-size:.92rem}
+.preview{width:100%;max-width:220px;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line)}
+.preview img,.preview svg{width:100%;height:100%;object-fit:cover;display:block}
+.dlg .foot{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:flex-end;border-top:1px solid var(--line);padding-top:.9rem}
+.dlg .foot .spacer{margin-right:auto}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:.65rem 1rem;border-radius:10px;font-weight:600;font-size:.92rem;box-shadow:var(--shadow);z-index:50;max-width:calc(100vw - 32px)}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:.85rem}
+.demo{background:var(--gold);color:#1b1405;text-align:center;font-weight:600;font-size:.88rem;padding:.45rem 16px}
+footer{color:var(--muted);font-size:.85rem;padding-block:0 3rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="demo" id="demoBar" hidden>Demo mode: changes are saved only in this browser until the Firebase setup is done.</div>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow" id="eyebrow">Christmas wish list</div>
+    <h1 id="heroTitle">Matthew's <span class="tag">wish list</span></h1>
+    <p class="lede" id="heroLede">Pick a gift, choose your name under “Who’s buying this?”, and everyone else will see it’s taken so nobody doubles up.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<div class="wrap" id="ownerbarWrap" hidden>
+  <div class="ownerbar">
+    <span class="label">Your controls</span>
+    <button class="btn primary" id="addGiftBtn" type="button">Add a gift</button>
+    <button class="btn" id="editAboutBtn" type="button">Edit About Me</button>
+    <button class="btn ghost" id="revealBtn" type="button" aria-pressed="false">Peek at claims</button>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="layout">
+    <section aria-labelledby="listTitle">
+      <div id="notice"></div>
+      <div class="toolbar">
+        <h2 id="listTitle">The list</h2>
+        <div class="controls">
+          <div class="seg" role="group" aria-label="Show" id="filterSeg">
+            <button type="button" data-f="all" aria-pressed="true">All</button>
+            <button type="button" data-f="open" aria-pressed="false">Still open</button>
+            <button type="button" data-f="mine" aria-pressed="false">Mine</button>
+          </div>
+          <div class="seg" role="group" aria-label="Sort" id="sortSeg">
+            <button type="button" data-s="order" aria-pressed="true">Favorites first</button>
+            <button type="button" data-s="price" aria-pressed="false">Price</button>
+          </div>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+    <aside class="about" id="about" aria-label="About me"></aside>
+  </div>
+</main>
+<footer class="wrap"><p>Claims update live for everyone with this link.</p><p><button class="linkbtn" type="button" id="ownerBtn">Owner sign-in</button></p></footer>
+
+<dialog id="giftDlg">
+  <form class="dlg" id="giftForm" method="dialog">
+    <h2 id="giftDlgTitle">Add a gift</h2>
+    <div class="field"><label for="gName">What is it?</label><input type="text" id="gName" required maxlength="120" placeholder="e.g. Wireless headphones"></div>
+    <div class="two">
+      <div class="field"><label for="gPrice">Price (USD)</label><input type="number" id="gPrice" min="0" step="0.01" placeholder="49.99"></div>
+      <div class="field"><label for="gOrder">Position</label><input type="number" id="gOrder" step="1" placeholder="1"><span class="hint">Lower shows first</span></div>
+    </div>
+    <div class="field"><label for="gUrl">Store link</label><input type="url" id="gUrl" placeholder="https://…"></div>
+    <div class="field"><label for="gDeal">Deal or promo code</label><input type="text" id="gDeal" maxlength="160" placeholder="e.g. $180 with code HB2026"></div>
+    <div class="field"><label for="gNote">Details</label><textarea id="gNote" maxlength="400" placeholder="Size, color, model…"></textarea></div>
+    <label class="check"><input type="checkbox" id="gWant"> Mark as a top pick</label>
+    <div class="field">
+      <label for="gImg">Picture</label>
+      <div class="preview" id="gPreview"></div>
+      <input type="url" id="gImg" placeholder="https://…/photo.jpg">
+      <span class="hint">On the store page, right-click the product photo and choose “Copy image address,” then paste it here.</span>
+    </div>
+    <div class="foot">
+      <button class="btn danger spacer" type="button" id="gDelete" hidden>Delete gift</button>
+      <button class="btn" type="button" id="gCancel">Cancel</button>
+      <button class="btn primary" type="submit" id="gSave">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="aboutDlg">
+  <form class="dlg" id="aboutForm" method="dialog">
+    <h2>Edit About Me</h2>
+    <div class="field"><label for="aName">Name</label><input type="text" id="aName" maxlength="60"></div>
+    <div class="field"><label for="aHead">One-liner</label><input type="text" id="aHead" maxlength="120"></div>
+    <div class="field"><label for="aBio">About me</label><textarea id="aBio" maxlength="1500" rows="5"></textarea></div>
+    <div class="field"><label for="aFacts">Sizes and favorites</label><textarea id="aFacts" rows="6" maxlength="1500"></textarea><span class="hint">One per line, like “Shirt size: M”</span></div>
+    <div class="field"><label for="aImg">Photo link</label><input type="url" id="aImg" placeholder="https://…/me.jpg"><span class="hint">A link to a photo of you (optional)</span></div>
+    <div class="foot">
+      <button class="btn" type="button" id="aCancel">Cancel</button>
+      <button class="btn primary" type="submit" id="aSave">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module">
+// =====================================================================
+//  SETUP: paste your Firebase web config and your Google email below.
+//  Until you do, the page runs in DEMO MODE (saved only in this browser).
+// =====================================================================
+const FIREBASE_CONFIG = {
+  apiKey: "PASTE_API_KEY",
+  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
+  projectId: "PASTE_PROJECT_ID",
+  storageBucket: "PASTE_PROJECT_ID.appspot.com",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+const OWNER_EMAIL = "YOUR_EMAIL@gmail.com";   // the Google account you'll sign in with to edit
+// =====================================================================
+
+const STARTER = [
+  {id:"hb-wallace", name:"Holderness & Bourne Wallace Hoodie Sweater, Heathered Navy", price:225, deal:"$180 with code HB2026", url:"https://holdernessandbourne.com/products/the-wallace-sweater-heathered-navy", order:1},
+  {id:"sb-belt", name:"Smathers & Branson Naval Academy Needlepoint Belt, Dark Navy", price:195, deal:"$175 with code SBWC-Q210", url:"https://www.smathersandbranson.com/products/navy-needlepoint-belt-classic-navy?variant=46287204221232", order:2},
+  {id:"pm-eb66", name:"Peter Millar EB66 Mélange Performance Five-Pocket Pant", price:178, note:"Waist 32, inseam 30. Price is approximate, check petermillar.com.", url:"https://www.petermillar.com/p/eb66-melange-performance-five-pocket-pant/197889758099.html?dwvar_mf26eb66afb_color=SND", order:3},
+  {id:"pm-chore-coat", name:"Peter Millar Autumn Crest Sweater Chore Coat, Charcoal", price:191.75, deal:"On sale at Nordstrom (regular $295)", note:"Size M", url:"https://www.nordstrom.com/s/autumn-crest-sweater-chore-coat/9204661?color=44444GZX5V", order:4},
+  {id:"lg-sleeve", name:"Leatherology 14 Inch MacBook Sleeve, Sand", price:105, deal:"About $79 with code HOLIDAY26 (25% off)", note:"For a 14\" MacBook Pro", url:"https://www.leatherology.com/products/14-inch-macbook-sleeve-sand?variant=46222515110136", order:5},
+  {id:"ck-boxers", name:"Calvin Klein Icon Cotton Stretch 3-Pack Boxer Brief", price:36.75, deal:"On sale at Calvin Klein (regular about $52.50)", note:"Size M", url:"https://www.calvinklein.us/en/underwear/men/multipacks/icon-cotton-stretch-3-pack-boxer-brief/NB4394-100.html", order:6},
+  {id:"uber-1", name:"Uber Eats gift card (1 of 3)", price:25, order:7},
+  {id:"uber-2", name:"Uber Eats gift card (2 of 3)", price:25, order:8},
+  {id:"uber-3", name:"Uber Eats gift card (3 of 3)", price:25, order:9},
+];
+const STARTER_PROFILE = {name:"Matthew", headline:"", bio:"", photoUrl:null,
+  facts:[{label:"Shirt / jacket",value:"M"},{label:"Pants",value:"32 x 30"},{label:"Underwear",value:"M"},{label:"Laptop",value:"14\" MacBook Pro"}]};
+
+const DEMO = FIREBASE_CONFIG.apiKey.startsWith("PASTE");
+
+// ---------------- Data layer ----------------
+async function firebaseApi(){
+  const V="10.12.2";
+  const {initializeApp}=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+  const A=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+  const F=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+  const app=initializeApp(FIREBASE_CONFIG);
+  const auth=A.getAuth(app); const db=F.getFirestore(app);
+  const api={uid:null, email:null, isOwner:false, onAuth:()=>{}};
+  A.onAuthStateChanged(auth, (u)=>{
+    if (!u){ A.signInAnonymously(auth).catch(()=>{}); api.uid=null; api.email=null; api.isOwner=false; api.onAuth(); return; }
+    api.uid=u.uid; api.email=u.email||null;
+    api.isOwner=!!(u.email && u.email.toLowerCase()===OWNER_EMAIL.toLowerCase());
+    api.onAuth();
+  });
+  const strip=(d)=>({id:d.id, ...d.data()});
+  api.subGifts=(cb,err)=>F.onSnapshot(F.collection(db,"gifts"), s=>cb(s.docs.map(strip)), err);
+  api.subClaims=(cb,err)=>F.onSnapshot(F.collection(db,"claims"), s=>{const m={}; s.docs.forEach(d=>m[d.id]=d.data()); cb(m);}, err);
+  api.subProfile=(cb,err)=>F.onSnapshot(F.doc(db,"site","profile"), s=>cb(s.exists()?s.data():null), err);
+  api.subPeople=(cb,err)=>F.onSnapshot(F.collection(db,"people"), s=>cb(s.docs.map(d=>d.data().name).filter(n=>typeof n==="string")), err);
+  api.addPerson=(name)=>F.addDoc(F.collection(db,"people"),{name});
+  api.claim=async(gid,name)=>{
+    const ref=F.doc(db,"claims",gid);
+    await F.runTransaction(db, async(tx)=>{
+      const cur=await tx.get(ref);
+      if (cur.exists()) throw Object.assign(new Error("taken"),{code:"taken"});
+      tx.set(ref,{by:api.uid, name, at:new Date().toISOString()});
+    });
+  };
+  api.unclaim=(gid)=>F.deleteDoc(F.doc(db,"claims",gid));
+  api.saveGift=(id,data)=>F.setDoc(id?F.doc(db,"gifts",id):F.doc(F.collection(db,"gifts")), data);
+  api.deleteGift=async(id)=>{ await F.deleteDoc(F.doc(db,"gifts",id)); try{ await F.deleteDoc(F.doc(db,"claims",id)); }catch(e){} };
+  api.saveProfile=(data)=>F.setDoc(F.doc(db,"site","profile"),data);
+  api.loadStarter=async()=>{ const b=F.writeBatch(db); STARTER.forEach(g=>{const {id,...rest}=g; b.set(F.doc(db,"gifts",id),normGift(rest));}); b.set(F.doc(db,"site","profile"),STARTER_PROFILE,{merge:true}); await b.commit(); };
+  api.signIn=()=>A.signInWithPopup(auth,new A.GoogleAuthProvider());
+  api.signOut=()=>A.signOut(auth);
+  return api;
+}
+
+function demoApi(){
+  const KEY="wishlist-demo-v1"; const ch=("BroadcastChannel" in window)?new BroadcastChannel(KEY):null;
+  const load=()=>{ try{ const v=JSON.parse(localStorage.getItem(KEY)); if (v) return v; }catch(e){}
+    const gifts={}; STARTER.forEach(g=>{const {id,...r}=g; gifts[id]=normGift(r);}); return {gifts, claims:{}, profile:STARTER_PROFILE}; };
+  let st=load(); const subs=new Set();
+  const emit=()=>subs.forEach(f=>f());
+  const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} ch&&ch.postMessage(1); emit(); };
+  ch&&(ch.onmessage=()=>{ st=load(); emit(); });
+  let uid; try{ uid=localStorage.getItem(KEY+"-uid"); if(!uid){ uid="demo-"+Math.random().toString(36).slice(2); localStorage.setItem(KEY+"-uid",uid);} }catch(e){ uid="demo-x"; }
+  let owner=false; try{ owner=localStorage.getItem(KEY+"-owner")==="1"; }catch(e){}
+  const api={uid, email:null, isOwner:owner, onAuth:()=>{}};
+  const sub=(fn)=>{ const f=()=>fn(); subs.add(f); setTimeout(f,0); return ()=>subs.delete(f); };
+  api.subGifts=(cb)=>sub(()=>cb(Object.entries(st.gifts).map(([id,g])=>({id,...g}))));
+  api.subClaims=(cb)=>sub(()=>cb({...st.claims}));
+  api.subPeople=(cb)=>sub(()=>cb((st.people||[]).slice()));
+  api.addPerson=async(name)=>{ st=load(); st.people=[...(st.people||[]),name]; save(); };
+  api.subProfile=(cb)=>sub(()=>cb(st.profile));
+  api.claim=async(gid,name)=>{ st=load(); if (st.claims[gid]) throw Object.assign(new Error("taken"),{code:"taken"}); st.claims[gid]={by:uid,name,at:new Date().toISOString()}; save(); };
+  api.unclaim=async(gid)=>{ delete st.claims[gid]; save(); };
+  api.saveGift=async(id,data)=>{ st.gifts[id||("g"+Date.now().toString(36))]=data; save(); };
+  api.deleteGift=async(id)=>{ delete st.gifts[id]; delete st.claims[id]; save(); };
+  api.saveProfile=async(d)=>{ st.profile=d; save(); };
+  api.loadStarter=async()=>{ localStorage.removeItem(KEY); st=load(); save(); };
+  const setOwner=(v)=>{ api.isOwner=v; try{ localStorage.setItem(KEY+"-owner",v?"1":"0"); }catch(e){} api.onAuth(); };
+  api.signIn=async()=>setOwner(true);
+  api.signOut=async()=>setOwner(false);
+  setTimeout(()=>api.onAuth(),0);
+  return api;
+}
+
+function normGift(g){ return {name:g.name, price:g.price??null, deal:g.deal??null, url:g.url??null, note:g.note??null, want:!!g.want, order:g.order??999, imageUrl:g.imageUrl??null}; }
+
+// ---------------- UI ----------------
+const $=(id)=>document.getElementById(id);
+const S={api:null, gifts:[], claims:{}, people:[], profile:null, loaded:{gifts:false,claims:false,profile:false},
+  error:null, filter:"all", sort:"order", reveal:false, openClaim:null, busy:{}, editing:null};
+try{ S.reveal=localStorage.getItem("wl-reveal")==="1"; }catch(e){}
+let myName=""; try{ myName=localStorage.getItem("wl-name")||""; }catch(e){}
+
+const money=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"});
+const fmtPrice=(p)=>(typeof p==="number"&&isFinite(p))?money.format(p):"";
+const safeUrl=(u)=>(typeof u==="string"&&/^https:\/\//i.test(u))?u:null;
+const host=(u)=>{ try{ return new URL(u).hostname.replace(/^www\./,""); }catch(e){ return "store"; } };
+const el=(tag,cls,text)=>{ const n=document.createElement(tag); if(cls) n.className=cls; if(text!=null) n.textContent=text; return n; };
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,3200); }
+const isOwner=()=>!!(S.api&&S.api.isOwner);
+const myUid=()=>S.api&&S.api.uid;
+
+const WRAPS=[["#B01E3A","#E8C36A"],["#1D4A37","#E35470"],["#2C4F7C","#F1F5F2"],["#A87A22","#B01E3A"],["#5A2A5E","#E8C36A"],["#2C7349","#F7E3E7"]];
+function present(seed){
+  let h=0; for (const c of String(seed)) h=(h*31+c.charCodeAt(0))>>>0;
+  const [box,rib]=WRAPS[h%WRAPS.length];
+  const w=document.createElement("div");
+  w.innerHTML=`<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="400" height="300" fill="${box}" opacity=".14"/><g opacity=".12" fill="${box}">${Array.from({length:14},(_,i)=>`<circle cx="${(i*67+h%50)%400}" cy="${(i*41+h%90)%300}" r="${3+i%4}"/>`).join("")}</g><rect x="120" y="128" width="160" height="120" rx="6" fill="${box}"/><rect x="108" y="104" width="184" height="36" rx="6" fill="${box}"/><rect x="108" y="104" width="184" height="36" rx="6" fill="#000" opacity=".12"/><rect x="188" y="104" width="24" height="144" fill="${rib}"/><path d="M200 104 C170 70 140 78 150 98 C156 108 180 106 200 104 Z" fill="${rib}"/><path d="M200 104 C230 70 260 78 250 98 C244 108 220 106 200 104 Z" fill="${rib}"/><circle cx="200" cy="104" r="9" fill="${rib}"/></svg>`;
+  return w.firstElementChild;
+}
+function picture(src,alt,seed){
+  if (!safeUrl(src)) return present(seed);
+  const im=new Image(); im.alt=alt; im.loading="lazy"; im.referrerPolicy="no-referrer"; im.src=src;
+  im.onerror=()=>im.replaceWith(present(seed)); return im;
+}
+function daysToXmas(){ const n=new Date(); const t=new Date(n.getFullYear(),n.getMonth(),n.getDate()); let x=new Date(n.getFullYear(),11,25); if (t>x) x=new Date(n.getFullYear()+1,11,25); return Math.round((x-t)/86400000); }
+const hideClaims=()=>isOwner()&&!S.reveal;
+
+function renderHero(){
+  const name=((S.profile&&S.profile.name)||"Matthew").trim();
+  document.title=name+"'s Wish List";
+  const h=$("heroTitle"); h.textContent=""; h.append(document.createTextNode(name+"'s "), el("span","tag","wish list"));
+  const st=$("stats"); st.textContent="";
+  const d=daysToXmas(); const s1=el("span","stat");
+  s1.append(el("b",null,String(d)), document.createTextNode(d===0?" Merry Christmas!":(d===1?" day until Christmas":" days until Christmas"))); st.append(s1);
+  const total=S.gifts.length;
+  if (total){ const s2=el("span","stat");
+    if (hideClaims()) s2.append(el("b",null,String(total)), document.createTextNode(total===1?" gift on the list":" gifts on the list"));
+    else { const c=S.gifts.filter(g=>S.claims[g.id]).length; s2.append(el("b",null,`${c} of ${total}`), document.createTextNode(" claimed")); }
+    st.append(s2); }
+}
+function renderAbout(){
+  const a=$("about"); a.textContent=""; const p=S.profile;
+  if (!S.loaded.profile){ a.append(el("p","headline","Loading…")); return; }
+  const name=(p&&p.name)||"Matthew";
+  const av=el("div","avatar");
+  if (p&&safeUrl(p.photoUrl)){ const im=new Image(); im.alt=name; im.referrerPolicy="no-referrer"; im.src=p.photoUrl; im.onerror=()=>{av.textContent=name.slice(0,1).toUpperCase();}; av.append(im); } else av.textContent=name.slice(0,1).toUpperCase();
+  a.append(av, el("h2",null,"About "+name));
+  if (p&&p.headline) a.append(el("p","headline",p.headline));
+  if (p&&p.bio) a.append(el("p","bio",p.bio));
+  else if (isOwner()) a.append(el("p","bio","Write a few lines about yourself so people know what you're into."));
+  const facts=(p&&Array.isArray(p.facts))?p.facts.filter(f=>f&&f.label):[];
+  if (facts.length){ a.append(el("div","section-label","Sizes & favorites")); const ul=el("ul","facts");
+    facts.forEach(f=>{ const li=el("li"); li.append(el("span","k",String(f.label)), el("span","v",String(f.value||""))); ul.append(li); }); a.append(ul); }
+  if (isOwner()){ const b=el("button","btn small","Edit About Me"); b.type="button"; b.style.marginTop="1rem"; b.onclick=openAbout; a.append(b); }
+}
+function sortedGifts(){
+  let list=S.gifts.slice();
+  if (S.filter==="open") list=list.filter(g=>!S.claims[g.id]||hideClaims());
+  if (S.filter==="mine") list=list.filter(g=>S.claims[g.id]&&S.claims[g.id].by===myUid());
+  if (S.sort==="price") list.sort((a,b)=>(a.price??1e12)-(b.price??1e12));
+  else list.sort((a,b)=>((b.want?1:0)-(a.want?1:0))||((a.order??999)-(b.order??999))||String(a.name).localeCompare(String(b.name)));
+  return list;
+}
+function renderNotice(){
+  const n=$("notice"); n.textContent=""; let msg=null;
+  if (S.error) msg=S.error;
+  else if (isOwner()&&!S.reveal&&S.gifts.length) msg="Surprise mode is on: you won't see what's been claimed. Use “Peek at claims” if you need to check.";
+  if (msg) n.append(el("div","notice",msg));
+}
+function renderGrid(){
+  const g=$("grid"); g.textContent="";
+  const empty=(h,p,btn)=>{ const e=el("div","empty"); e.style.gridColumn="1/-1"; e.append(el("h3",null,h), el("p",null,p)); if(btn) e.append(btn); g.append(e); };
+  if (!S.loaded.gifts){ empty("Unwrapping the list…","Gifts will appear here in a moment."); return; }
+  if (!S.gifts.length){
+    let btn=null;
+    if (isOwner()){ btn=el("div","row"); const a=el("button","btn primary","Load my starter list"); a.type="button";
+      a.onclick=async()=>{ a.disabled=true; try{ await S.api.loadStarter(); toast("Starter list loaded."); }catch(e){ toast("Couldn't load the list. Check the database rules."); a.disabled=false; } };
+      const b=el("button","btn","Add a gift"); b.type="button"; b.onclick=()=>openGift(null); btn.append(a,b); }
+    empty("No gifts yet", isOwner()?"Load the 9 gifts from your list, or add your own.":"Check back soon. The list is still being written.", btn); return; }
+  const list=sortedGifts();
+  if (!list.length){ empty(S.filter==="mine"?"You haven't claimed anything yet":"Everything's been claimed", S.filter==="mine"?"Pick a gift and choose your name under “Who’s buying this?”":"Every gift on the list has someone getting it."); return; }
+  list.forEach(gift=>g.append(card(gift)));
+}
+function card(gift){
+  const claim=hideClaims()?null:S.claims[gift.id];
+  const mine=claim&&claim.by===myUid();
+  const c=el("article","gift"+(claim?" is-claimed":""));
+  const pic=el("div","pic"); pic.append(el("span","hole"), picture(gift.imageUrl, gift.name||"Gift", gift.id));
+  const chips=el("div","chips"); if (gift.want) chips.append(el("span","chip want","Top pick")); pic.append(chips); c.append(pic);
+  const body=el("div","body"); body.append(el("h3",null,gift.name||"Untitled gift"));
+  const pr=el("div","priceRow"); const p=fmtPrice(gift.price); if (p) pr.append(el("span","price",p));
+  const u=safeUrl(gift.url); if (u){ const a=el("a","store","View at "+host(u)+" ↗"); a.href=u; a.target="_blank"; a.rel="noopener noreferrer"; pr.append(a); }
+  if (pr.childNodes.length) body.append(pr);
+  if (gift.deal) body.append(el("p","deal",gift.deal));
+  if (gift.note) body.append(el("p","note",gift.note));
+  const act=el("div","actions");
+  if (claim){
+    const ban=el("div","claimed-banner"); ban.append(el("span",null, (claim.name||"Someone")+" is getting this")); act.append(ban);
+    if (mine||isOwner()){ const b=el("button","btn small ghost",mine?"Undo my claim":"Remove claim"); b.type="button"; b.disabled=!!S.busy[gift.id]; b.onclick=()=>unclaim(gift.id); act.append(b); }
+  } else if (!isOwner()){
+    if (S.openClaim===gift.id){
+      const f=el("form","claimForm"); const lid="cn-"+gift.id;
+      const lab=el("label",null,"Add a name to the list"); lab.htmlFor=lid;
+      const inp=el("input"); inp.type="text"; inp.id=lid; inp.maxLength=40; inp.required=true; inp.placeholder="e.g. Aunt Jen";
+      const row=el("div","row"); const no=el("button","btn small","Cancel"); no.type="button"; no.onclick=()=>{S.openClaim=null;render();};
+      const ok=el("button","btn primary small","Add & claim"); ok.type="submit"; ok.disabled=!!S.busy[gift.id];
+      row.append(no,ok); f.append(lab,inp,row); f.onsubmit=(e)=>{e.preventDefault(); addAndClaim(gift.id, inp.value.trim());};
+      act.append(f); setTimeout(()=>inp.focus(),0);
+    } else {
+      const wrap=el("div","buyer"); const sid="buy-"+gift.id;
+      const lab=el("label",null,"Who's buying this?"); lab.htmlFor=sid;
+      const sel=el("select","purchaser"); sel.id=sid; sel.disabled=!S.loaded.claims||!myUid()||!!S.busy[gift.id];
+      const ph=el("option",null,"Pick your name…"); ph.value=""; ph.selected=true; ph.disabled=true; sel.append(ph);
+      nameList().forEach(n=>{ const o=el("option",null,n); o.value=n; sel.append(o); });
+      const add=el("option",null,"+ Add a new name…"); add.value="__add__"; sel.append(add);
+      sel.onchange=()=>{ const v=sel.value; if (v==="__add__"){ S.openClaim=gift.id; render(); } else if (v) claim_(gift.id,v); };
+      wrap.append(lab,sel); act.append(wrap);
+    }
+  }
+  if (isOwner()){ const e=el("button","btn small","Edit"); e.type="button"; e.onclick=()=>openGift(gift); act.append(e); }
+  body.append(act); c.append(body); return c;
+}
+function render(){
+  renderHero(); renderNotice(); renderGrid(); renderAbout();
+  $("ownerbarWrap").hidden=!isOwner();
+  const rb=$("revealBtn"); rb.setAttribute("aria-pressed",String(S.reveal)); rb.textContent=S.reveal?"Hide claims (surprise mode)":"Peek at claims";
+  const m=document.querySelector('#filterSeg [data-f="mine"]'); if (m) m.hidden=isOwner();
+  $("ownerBtn").textContent=isOwner()?"Sign out":"Owner sign-in";
+}
+
+function nameList(){
+  const seen=new Map();
+  [...S.people, ...Object.values(S.claims).map(c=>c&&c.name), myName].forEach(n=>{ if (typeof n!=="string") return; const t=n.trim(); if (t && !seen.has(t.toLowerCase())) seen.set(t.toLowerCase(),t); });
+  return [...seen.values()].sort((a,b)=>a.localeCompare(b));
+}
+async function addAndClaim(gid,name){
+  if (!name){ toast("Type a name first."); return; }
+  const exists=nameList().some(n=>n.toLowerCase()===name.toLowerCase());
+  if (!exists){ try{ await S.api.addPerson(name.slice(0,40)); }catch(e){} }
+  await claim_(gid,name);
+}
+async function claim_(gid,name){
+  if (!name){ toast("Add your name so others know who's getting it."); return; }
+  if (!myUid()){ toast("Still connecting. Try again in a second."); return; }
+  try{ localStorage.setItem("wl-name",name); }catch(e){} myName=name;
+  S.busy[gid]=true; render();
+  try{ await S.api.claim(gid,name.slice(0,40)); S.openClaim=null; toast("Claimed! Everyone else will see it's taken."); }
+  catch(e){ if (e&&(e.code==="taken"||e.code==="permission-denied")){ S.openClaim=null; toast("Too late, someone just claimed this one."); } else toast("Couldn't save your claim. Check your connection and try again."); }
+  finally{ delete S.busy[gid]; render(); }
+}
+async function unclaim(gid){
+  S.busy[gid]=true; render();
+  try{ await S.api.unclaim(gid); toast("Claim removed."); }catch(e){ toast("Couldn't remove the claim. You can only undo claims made on this device."); }
+  finally{ delete S.busy[gid]; render(); }
+}
+
+function setPreview(src,seed){ const pv=$("gPreview"); pv.textContent=""; pv.append(picture(src,"",seed)); }
+function openGift(gift){
+  S.editing=gift||null;
+  $("giftDlgTitle").textContent=gift?"Edit gift":"Add a gift";
+  $("gName").value=gift?.name||""; $("gPrice").value=(gift&&typeof gift.price==="number")?gift.price:"";
+  $("gOrder").value=gift?.order??(S.gifts.length+1); $("gUrl").value=gift?.url||""; $("gNote").value=gift?.note||""; $("gDeal").value=gift?.deal||"";
+  $("gWant").checked=!!gift?.want; $("gImg").value=gift?.imageUrl||""; setPreview(gift?.imageUrl,gift?.id||"new");
+  const del=$("gDelete"); del.hidden=!gift; del.textContent="Delete gift"; del.dataset.armed="";
+  $("giftDlg").showModal();
+}
+$("gImg").oninput=(e)=>setPreview(e.target.value.trim(), S.editing?.id||"new");
+$("gCancel").onclick=()=>$("giftDlg").close();
+$("gDelete").onclick=async()=>{ const b=$("gDelete"); if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Tap again to delete"; return; }
+  try{ await S.api.deleteGift(S.editing.id); $("giftDlg").close(); toast("Gift deleted."); }catch(e){ toast("Couldn't delete. Try again."); } };
+$("giftForm").onsubmit=async(e)=>{
+  e.preventDefault();
+  const name=$("gName").value.trim(); if(!name){ $("gName").focus(); return; }
+  const url=$("gUrl").value.trim(), img=$("gImg").value.trim();
+  if (url&&!safeUrl(url)){ toast("Store links need to start with https://"); $("gUrl").focus(); return; }
+  if (img&&!safeUrl(img)){ toast("Picture links need to start with https://"); $("gImg").focus(); return; }
+  const save=$("gSave"); save.disabled=true; save.textContent="Saving…";
+  try{ const pv=parseFloat($("gPrice").value), ov=parseInt($("gOrder").value,10);
+    await S.api.saveGift(S.editing?.id||null, {name, price:isFinite(pv)?Math.round(pv*100)/100:null, deal:$("gDeal").value.trim()||null, url:url||null, note:$("gNote").value.trim()||null, want:$("gWant").checked, order:isFinite(ov)?ov:999, imageUrl:img||null});
+    $("giftDlg").close(); toast(S.editing?"Gift updated.":"Gift added."); }
+  catch(err){ toast("Couldn't save. Make sure you're signed in as the owner."); }
+  finally{ save.disabled=false; save.textContent="Save"; }
+};
+function openAbout(){ const p=S.profile||{};
+  $("aName").value=p.name||"Matthew"; $("aHead").value=p.headline||""; $("aBio").value=p.bio||""; $("aImg").value=p.photoUrl||"";
+  $("aFacts").value=(Array.isArray(p.facts)?p.facts:[]).map(f=>`${f.label}: ${f.value||""}`).join("\n");
+  $("aboutDlg").showModal(); }
+$("aCancel").onclick=()=>$("aboutDlg").close();
+$("aboutForm").onsubmit=async(e)=>{ e.preventDefault();
+  const img=$("aImg").value.trim(); if (img&&!safeUrl(img)){ toast("Photo links need to start with https://"); return; }
+  const save=$("aSave"); save.disabled=true; save.textContent="Saving…";
+  try{ const facts=$("aFacts").value.split("\n").map(l=>l.trim()).filter(Boolean).slice(0,20).map(l=>{const i=l.indexOf(":"); return i>0?{label:l.slice(0,i).trim(),value:l.slice(i+1).trim()}:{label:l,value:""};});
+    await S.api.saveProfile({name:$("aName").value.trim()||"Matthew", headline:$("aHead").value.trim(), bio:$("aBio").value.trim(), photoUrl:img||null, facts});
+    $("aboutDlg").close(); toast("About Me saved."); }
+  catch(err){ toast("Couldn't save. Make sure you're signed in as the owner."); }
+  finally{ save.disabled=false; save.textContent="Save"; } };
+
+$("addGiftBtn").onclick=()=>openGift(null);
+$("editAboutBtn").onclick=openAbout;
+$("revealBtn").onclick=()=>{ S.reveal=!S.reveal; try{ localStorage.setItem("wl-reveal",S.reveal?"1":"0"); }catch(e){} render(); };
+$("filterSeg").onclick=(e)=>{ const b=e.target.closest("button[data-f]"); if(!b) return; S.filter=b.dataset.f; document.querySelectorAll("#filterSeg button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); render(); };
+$("sortSeg").onclick=(e)=>{ const b=e.target.closest("button[data-s]"); if(!b) return; S.sort=b.dataset.s; document.querySelectorAll("#sortSeg button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); render(); };
+$("ownerBtn").onclick=async()=>{ try{ if (isOwner()) await S.api.signOut(); else { await S.api.signIn(); if (!DEMO && !S.api.isOwner) toast("That account isn't the owner's, so you're viewing as a guest."); } }catch(e){ toast("Sign-in didn't finish. Try again."); } };
+
+// ---------------- Boot ----------------
+$("demoBar").hidden=!DEMO;
+render();
+(async()=>{
+  try{ S.api=DEMO?demoApi():await firebaseApi(); }
+  catch(e){ S.error="Couldn't connect to the gift database. Check your internet connection and reload."; S.loaded={gifts:true,claims:true,profile:true}; render(); return; }
+  const fail=()=>{ S.error="The gift list couldn't load. If you're the owner, check the Firebase setup steps."; render(); };
+  S.api.onAuth=()=>render();
+  S.api.subGifts(g=>{S.gifts=g; S.loaded.gifts=true; render();}, fail);
+  S.api.subClaims(c=>{S.claims=c; S.loaded.claims=true; render();}, fail);
+  S.api.subProfile(p=>{S.profile=p; S.loaded.profile=true; render();}, fail);
+  S.api.subPeople(n=>{S.people=n; render();}, ()=>{});
+})();
+</script>
+
+</body>
+</html>
